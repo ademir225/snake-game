@@ -3,231 +3,218 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>O Reino Perdido</title>
+<title>O Reino Perdido - Terror</title>
 
 <style>
-
 * {
     box-sizing: border-box;
 }
 
 body {
     margin: 0;
-    background: #05070d;
+    overflow: hidden;
+    background: #000;
     color: white;
     font-family: Arial, sans-serif;
-    text-align: center;
 }
 
 #jogo {
-    max-width: 1000px;
-    margin: auto;
-    padding: 15px;
-}
-
-h1 {
-    color: #ffd700;
-    text-shadow: 0 0 15px #ff9900;
-}
-
-#status {
-    background: #171c2c;
-    padding: 12px;
-    border-radius: 10px;
-    margin-bottom: 15px;
-    font-size: 18px;
-}
-
-/* MUNDO */
-
-#mapa {
+    width: 100vw;
+    height: 100vh;
     position: relative;
-    width: 900px;
-    max-width: 95vw;
-    height: 520px;
-    margin: auto;
-    overflow: hidden;
-
     background:
-        radial-gradient(circle at 50% 40%, #477b42, #18351d);
-
-    border: 4px solid #b8860b;
-    border-radius: 15px;
-
-    box-shadow:
-        inset 0 0 80px #000,
-        0 0 30px #b8860b;
-
-    perspective: 700px;
+        radial-gradient(circle at 50% 45%,
+        #596451 0%,
+        #263028 25%,
+        #101510 55%,
+        #020302 100%);
 }
 
-/* chão com efeito de profundidade */
-
+/* efeito de profundidade */
 #chao {
     position: absolute;
+    left: 0;
+    bottom: 0;
     width: 100%;
-    height: 100%;
+    height: 55%;
 
     background:
+        linear-gradient(
+            to bottom,
+            rgba(0,0,0,0),
+            #050605
+        ),
         repeating-linear-gradient(
             90deg,
-            rgba(255,255,255,.03) 0px,
-            rgba(255,255,255,.03) 2px,
-            transparent 2px,
-            transparent 60px
+            #151b16 0px,
+            #151b16 40px,
+            #101510 42px,
+            #101510 80px
         );
 
-    transform: rotateX(5deg);
+    transform: perspective(500px) rotateX(35deg);
+    transform-origin: bottom;
 }
 
-/* PERSONAGEM */
+/* árvores */
+.arvore {
+    position: absolute;
+    font-size: 90px;
+    filter: brightness(.35) drop-shadow(0 10px 10px black);
+}
 
-#jogador {
+.a1 { left: 5%; top: 25%; }
+.a2 { left: 20%; top: 18%; }
+.a3 { right: 10%; top: 20%; }
+.a4 { right: 25%; top: 15%; }
+
+/* HUD */
+#hud {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    z-index: 20;
+
+    background: rgba(0,0,0,.65);
+    border: 1px solid #777;
+    border-radius: 8px;
+
+    padding: 12px;
+
+    box-shadow: 0 0 15px black;
+}
+
+/* mira */
+#mira {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+
+    transform: translate(-50%, -50%);
+
+    font-size: 28px;
+
+    z-index: 20;
+
+    color: white;
+    text-shadow: 0 0 5px black;
+}
+
+/* lanterna */
+#lanterna {
     position: absolute;
 
-    width: 50px;
-    height: 65px;
+    left: 50%;
+    top: 50%;
 
-    left: 420px;
-    top: 350px;
+    width: 700px;
+    height: 500px;
 
-    font-size: 45px;
+    transform: translate(-50%, -50%);
 
-    filter: drop-shadow(0 12px 5px rgba(0,0,0,.7));
+    background:
+        radial-gradient(
+            ellipse,
+            rgba(255,255,220,.22) 0%,
+            rgba(255,255,220,.08) 25%,
+            rgba(0,0,0,.75) 65%,
+            rgba(0,0,0,.96) 100%
+        );
 
-    transition: .15s;
+    pointer-events: none;
 
     z-index: 10;
 }
 
-/* MONSTRO */
-
+/* monstro */
 #monstro {
     position: absolute;
 
-    width: 60px;
-    height: 70px;
+    left: 68%;
+    top: 42%;
 
-    left: 650px;
-    top: 180px;
-
-    font-size: 55px;
+    font-size: 80px;
 
     filter:
-        drop-shadow(0 12px 5px rgba(0,0,0,.8))
-        drop-shadow(0 0 10px red);
+        brightness(.45)
+        drop-shadow(0 15px 10px black)
+        drop-shadow(0 0 15px darkred);
 
-    z-index: 9;
+    z-index: 5;
+
+    animation: respirar 2s infinite;
 }
 
-/* LOCAIS */
+@keyframes respirar {
+    0%,100% {
+        transform: scale(1);
+    }
 
-.local {
-    position: absolute;
-
-    padding: 12px;
-
-    background: rgba(0,0,0,.65);
-
-    border: 2px solid #ffd700;
-
-    border-radius: 10px;
-
-    box-shadow: 0 8px 15px rgba(0,0,0,.5);
-
-    font-weight: bold;
+    50% {
+        transform: scale(1.04);
+    }
 }
 
-#vila {
-    left: 40px;
-    top: 50px;
-}
-
-#floresta {
-    right: 40px;
-    top: 50px;
-}
-
-#caverna {
-    right: 50px;
-    bottom: 40px;
-}
-
-/* BARRA DO MONSTRO */
-
-#barraMonstro {
-    position: absolute;
-
-    left: 620px;
-    top: 150px;
-
-    width: 120px;
-    height: 12px;
-
-    background: #333;
-
-    border: 2px solid white;
-
-    border-radius: 10px;
-
-    overflow: hidden;
-
-    z-index: 11;
-}
-
-#vidaMonstro {
-    width: 100%;
-    height: 100%;
-
-    background: red;
-}
-
-/* MENSAGEM */
-
+/* mensagem */
 #mensagem {
-    min-height: 60px;
+    position: absolute;
+
+    bottom: 90px;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 80%;
+
+    text-align: center;
+
+    background: rgba(0,0,0,.7);
 
     padding: 15px;
 
-    font-size: 18px;
-
-    line-height: 1.5;
-}
-
-/* CONTROLES */
-
-button {
-    padding: 12px 18px;
-
-    margin: 4px;
-
-    border: none;
-
     border-radius: 8px;
 
-    background: #d4af37;
+    z-index: 20;
+}
 
-    color: #111;
+/* controles */
+#controles {
+    position: absolute;
 
-    font-size: 17px;
+    bottom: 20px;
+    left: 50%;
 
-    font-weight: bold;
+    transform: translateX(-50%);
+
+    z-index: 30;
+
+    text-align: center;
+}
+
+button {
+    background: #222;
+    color: white;
+
+    border: 1px solid #888;
+
+    border-radius: 6px;
+
+    padding: 12px 18px;
+
+    margin: 3px;
 
     cursor: pointer;
 
-    box-shadow: 0 5px 0 #806000;
+    font-size: 16px;
 }
 
-button:active {
-    transform: translateY(4px);
-    box-shadow: 0 1px 0 #806000;
+button:hover {
+    background: #444;
 }
 
-.controles {
-    margin-top: 10px;
+#perigo {
+    color: #ff4444;
 }
-
 </style>
 </head>
 
@@ -235,277 +222,105 @@ button:active {
 
 <div id="jogo">
 
-<h1>⚔️ O REINO PERDIDO ⚔️</h1>
+    <div id="chao"></div>
 
-<div id="status">
+    <div class="arvore a1">🌲</div>
+    <div class="arvore a2">🌲</div>
+    <div class="arvore a3">🌲</div>
+    <div class="arvore a4">🌲</div>
 
-❤️ Vida: <span id="vida">100</span>
-
-&nbsp;&nbsp;
-
-⭐ XP: <span id="xp">0</span>
-
-&nbsp;&nbsp;
-
-💰 Ouro: <span id="ouro">0</span>
-
-</div>
-
-<div id="mapa">
-
-<div id="chao"></div>
-
-<div class="local" id="vila">
-🏰 Vila de Eldor
-</div>
-
-<div class="local" id="floresta">
-🌲 Floresta
-</div>
-
-<div class="local" id="caverna">
-🕳️ Caverna
-</div>
-
-<div id="jogador"><div id="barraMonstro" style="
-position:absolute;
-left:645px;
-top:155px;
-width:75px;
-height:10px;
-background:#333;
-border:2px solid white;
-border-radius:10px;
-z-index:21;
-">
-    <div id="vidaMonstro" style="
-    width:100%;
-    height:100%;
-    background:red;
-    ">
+    <div id="hud">
+        ❤️ Vida: <span id="vida">100</span><br>
+        🔦 Lanterna: ligada<br>
+        🎒 Munição: <span id="municao">12</span>
     </div>
-</div>
-<div id="monstro" style="
-position:absolute;
-left:650px;
-top:180px;
-font-size:55px;
-z-index:20;
-filter:drop-shadow(0 10px 5px black);
-">
-👹
-</div>
 
-🧙
-</div>
+    <div id="mira">+</div>
 
-<div id="barraMonstro">
-<div id="vidaMonstro"></div>
-</div>
+    <div id="lanterna"></div>
 
-<div id="monstro">
-👹
-</div>
+    <div id="monstro">👹</div>
 
-</div>
+    <div id="mensagem">
+        🌑 Você acordou sozinho em uma floresta desconhecida.
+        <br>
+        Há alguma coisa observando você...
+    </div>
 
-<div class="controles">
+    <div id="controles">
 
-<button onclick="mover(0,-25)">⬆️</button>
+        <button onclick="andar('frente')">⬆️ Andar</button>
 
-<br>
+        <button onclick="atirar()">🔫 Atirar</button>
 
-<button onclick="mover(-25,0)">⬅️</button>
+        <button onclick="lanterna()">🔦 Lanterna</button>
 
-<button onclick="mover(0,25)">⬇️</button>
-
-<button onclick="mover(25,0)">➡️</button>
-
-</div>
-
-<div>
-
-<button onclick="atacar()">
-⚔️ ATACAR
-</button>
-
-<button onclick="explorar()">
-🌲 EXPLORAR
-</button>
-
-</div>
-
-<div id="mensagem">
-
-👹 Um monstro apareceu na floresta!
-<br>
-Use as setas para se aproximar e ataque.
-
-</div>
+    </div>
 
 </div>
 
 <script>
 
-let x = 420;
-let y = 350;
-
 let vida = 100;
-let xp = 0;
-let ouro = 0;
+let municao = 12;
+let luz = true;
 
-let vidaMonstro = 100;
+function atirar() {
 
-function mover(dx, dy) {
-
-    x += dx;
-    y += dy;
-
-    if (x < 10) x = 10;
-    if (y < 10) y = 10;
-
-    if (x > 840) x = 840;
-    if (y > 450) y = 450;
-
-    document.getElementById("jogador").style.left =
-        x + "px";
-
-    document.getElementById("jogador").style.top =
-        y + "px";
-
-    verificarDistancia();
-
-}
-
-document.addEventListener("keydown", function(event) {
-
-    if (event.key === "ArrowUp") {
-        mover(0,-25);
-    }
-
-    if (event.key === "ArrowDown") {
-        mover(0,25);
-    }
-
-    if (event.key === "ArrowLeft") {
-        mover(-25,0);
-    }
-
-    if (event.key === "ArrowRight") {
-        mover(25,0);
-    }
-
-});
-
-function verificarDistancia() {
-
-    let mx = 650;
-    let my = 180;
-
-    let distancia =
-        Math.sqrt(
-            Math.pow(x - mx, 2) +
-            Math.pow(y - my, 2)
-        );
-
-    if (distancia < 130) {
+    if (municao <= 0) {
 
         document.getElementById("mensagem").innerHTML =
-        "👹 Você está perto do monstro! " +
-        "Clique em ⚔️ ATACAR para lutar!";
+        "🔫 Sem munição! Você precisa encontrar mais.";
+
+        return;
+    }
+
+    municao--;
+
+    document.getElementById("municao").textContent =
+        municao;
+
+    document.getElementById("mensagem").innerHTML =
+        "💥 DISPARO! O som ecoou pela floresta...";
+
+    if (municao === 0) {
+
+        document.getElementById("mensagem").innerHTML +=
+        "<br>⚠️ Sua munição acabou.";
 
     }
 
 }
 
-function atacar() {
+function andar(direcao) {
 
-    let mx = 650;
-    let my = 180;
+    document.getElementById("mensagem").innerHTML =
+        "👣 Você avançou pela floresta...";
 
-    let distancia =
-        Math.sqrt(
-            Math.pow(x - mx, 2) +
-            Math.pow(y - my, 2)
-        );
+}
 
-    if (distancia > 150) {
+function lanterna() {
 
-        document.getElementById("mensagem").innerHTML =
-        "⚠️ Você está muito longe! " +
-        "Aproxime-se do monstro.";
+    luz = !luz;
 
-        return;
-    }
+    const elemento =
+        document.getElementById("lanterna");
 
-    if (vidaMonstro <= 0) {
+    if (luz) {
+
+        elemento.style.opacity = "1";
 
         document.getElementById("mensagem").innerHTML =
-        "🏆 Você já derrotou este monstro!";
-
-        return;
-    }
-
-    let dano = Math.floor(Math.random() * 20) + 10;
-
-    vidaMonstro -= dano;
-
-    if (vidaMonstro < 0) {
-        vidaMonstro = 0;
-    }
-
-    document.getElementById("vidaMonstro").style.width =
-        vidaMonstro + "%";
-
-    if (vidaMonstro <= 0) {
-
-        xp += 50;
-        ouro += 25;
-
-        document.getElementById("monstro").innerHTML = "💀";
-
-        document.getElementById("mensagem").innerHTML =
-        "🏆 VITÓRIA! Você derrotou o monstro! " +
-        "Ganhou ⭐ 50 XP e 💰 25 moedas.";
+            "🔦 A lanterna foi ligada.";
 
     } else {
 
-        let danoInimigo =
-            Math.floor(Math.random() * 10) + 5;
-
-        vida -= danoInimigo;
-
-        if (vida < 0) {
-            vida = 0;
-        }
+        elemento.style.opacity = ".15";
 
         document.getElementById("mensagem").innerHTML =
-        "⚔️ Você causou " + dano +
-        " de dano!<br>" +
-        "👹 O monstro causou " +
-        danoInimigo + " de dano em você.";
+            "🌑 A lanterna foi desligada...";
 
     }
-
-    atualizar();
-
-}
-
-function explorar() {
-
-    document.getElementById("mensagem").innerHTML =
-    "🌲 Você está explorando a floresta. " +
-    "Talvez exista uma pista sobre o Cristal de Eldor...";
-
-}
-
-function atualizar() {
-
-    document.getElementById("vida").textContent = vida;
-
-    document.getElementById("xp").textContent = xp;
-
-    document.getElementById("ouro").textContent = ouro;
 
 }
 
