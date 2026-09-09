@@ -3,102 +3,231 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>O Reino Perdido</title>
 
 <style>
+
+* {
+    box-sizing: border-box;
+}
+
 body {
     margin: 0;
-    background: #080b14;
+    background: #05070d;
     color: white;
     font-family: Arial, sans-serif;
     text-align: center;
 }
 
 #jogo {
-    max-width: 900px;
-    margin: 20px auto;
+    max-width: 1000px;
+    margin: auto;
+    padding: 15px;
 }
 
 h1 {
     color: #ffd700;
+    text-shadow: 0 0 15px #ff9900;
 }
 
 #status {
-    background: #171d2e;
+    background: #171c2c;
     padding: 12px;
     border-radius: 10px;
     margin-bottom: 15px;
+    font-size: 18px;
 }
+
+/* MUNDO */
 
 #mapa {
     position: relative;
-    width: 800px;
+    width: 900px;
     max-width: 95vw;
-    height: 500px;
+    height: 520px;
     margin: auto;
     overflow: hidden;
-    border: 4px solid #d4af37;
-    border-radius: 12px;
+
     background:
-        linear-gradient(45deg, #285c35 25%, #347344 25%,
-        #347344 50%, #285c35 50%, #285c35 75%,
-        #347344 75%);
-    background-size: 80px 80px;
+        radial-gradient(circle at 50% 40%, #477b42, #18351d);
+
+    border: 4px solid #b8860b;
+    border-radius: 15px;
+
+    box-shadow:
+        inset 0 0 80px #000,
+        0 0 30px #b8860b;
+
+    perspective: 700px;
 }
+
+/* chão com efeito de profundidade */
+
+#chao {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+
+    background:
+        repeating-linear-gradient(
+            90deg,
+            rgba(255,255,255,.03) 0px,
+            rgba(255,255,255,.03) 2px,
+            transparent 2px,
+            transparent 60px
+        );
+
+    transform: rotateX(5deg);
+}
+
+/* PERSONAGEM */
 
 #jogador {
     position: absolute;
-    width: 38px;
-    height: 38px;
-    background: #3498db;
-    border: 3px solid white;
-    border-radius: 50%;
-    left: 80px;
-    top: 220px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 23px;
-    z-index: 5;
+
+    width: 50px;
+    height: 65px;
+
+    left: 420px;
+    top: 350px;
+
+    font-size: 45px;
+
+    filter: drop-shadow(0 12px 5px rgba(0,0,0,.7));
+
+    transition: .15s;
+
+    z-index: 10;
 }
+
+/* MONSTRO */
+
+#monstro {
+    position: absolute;
+
+    width: 60px;
+    height: 70px;
+
+    left: 650px;
+    top: 180px;
+
+    font-size: 55px;
+
+    filter:
+        drop-shadow(0 12px 5px rgba(0,0,0,.8))
+        drop-shadow(0 0 10px red);
+
+    z-index: 9;
+}
+
+/* LOCAIS */
 
 .local {
     position: absolute;
-    padding: 10px;
-    background: #1b1b1b;
+
+    padding: 12px;
+
+    background: rgba(0,0,0,.65);
+
     border: 2px solid #ffd700;
-    border-radius: 8px;
-    color: white;
+
+    border-radius: 10px;
+
+    box-shadow: 0 8px 15px rgba(0,0,0,.5);
+
+    font-weight: bold;
 }
 
 #vila {
     left: 40px;
-    top: 40px;
+    top: 50px;
 }
 
 #floresta {
     right: 40px;
-    top: 60px;
+    top: 50px;
 }
 
 #caverna {
     right: 50px;
-    bottom: 50px;
+    bottom: 40px;
 }
+
+/* BARRA DO MONSTRO */
+
+#barraMonstro {
+    position: absolute;
+
+    left: 620px;
+    top: 150px;
+
+    width: 120px;
+    height: 12px;
+
+    background: #333;
+
+    border: 2px solid white;
+
+    border-radius: 10px;
+
+    overflow: hidden;
+
+    z-index: 11;
+}
+
+#vidaMonstro {
+    width: 100%;
+    height: 100%;
+
+    background: red;
+}
+
+/* MENSAGEM */
 
 #mensagem {
-    min-height: 50px;
+    min-height: 60px;
+
     padding: 15px;
+
     font-size: 18px;
+
+    line-height: 1.5;
 }
 
-.controles button {
-    width: 55px;
-    height: 45px;
-    margin: 3px;
-    font-size: 20px;
+/* CONTROLES */
+
+button {
+    padding: 12px 18px;
+
+    margin: 4px;
+
+    border: none;
+
+    border-radius: 8px;
+
+    background: #d4af37;
+
+    color: #111;
+
+    font-size: 17px;
+
+    font-weight: bold;
+
     cursor: pointer;
+
+    box-shadow: 0 5px 0 #806000;
 }
+
+button:active {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 #806000;
+}
+
+.controles {
+    margin-top: 10px;
+}
+
 </style>
 </head>
 
@@ -106,126 +235,249 @@ h1 {
 
 <div id="jogo">
 
-<h1>⚔️ O Reino Perdido ⚔️</h1>
+<h1>⚔️ O REINO PERDIDO ⚔️</h1>
 
 <div id="status">
+
 ❤️ Vida: <span id="vida">100</span>
+
 &nbsp;&nbsp;
+
 ⭐ XP: <span id="xp">0</span>
+
 &nbsp;&nbsp;
+
 💰 Ouro: <span id="ouro">0</span>
+
 </div>
 
 <div id="mapa">
 
-    <div id="jogador">🧙</div>
+<div id="chao"></div>
 
-    <div class="local" id="vila">
-        🏰 Vila
-    </div>
+<div class="local" id="vila">
+🏰 Vila de Eldor
+</div>
 
-    <div class="local" id="floresta">
-        🌲 Floresta
-    </div>
+<div class="local" id="floresta">
+🌲 Floresta
+</div>
 
-    <div class="local" id="caverna">
-        🕳️ Caverna
-    </div>
+<div class="local" id="caverna">
+🕳️ Caverna
+</div>
+
+<div id="jogador">
+🧙
+</div>
+
+<div id="barraMonstro">
+<div id="vidaMonstro"></div>
+</div>
+
+<div id="monstro">
+👹
+</div>
 
 </div>
 
 <div class="controles">
-    <button onclick="mover(0,-20)">⬆️</button><br>
 
-    <button onclick="mover(-20,0)">⬅️</button>
-    <button onclick="mover(0,20)">⬇️</button>
-    <button onclick="mover(20,0)">➡️</button>
+<button onclick="mover(0,-25)">⬆️</button>
+
+<br>
+
+<button onclick="mover(-25,0)">⬅️</button>
+
+<button onclick="mover(0,25)">⬇️</button>
+
+<button onclick="mover(25,0)">➡️</button>
+
+</div>
+
+<div>
+
+<button onclick="atacar()">
+⚔️ ATACAR
+</button>
+
+<button onclick="explorar()">
+🌲 EXPLORAR
+</button>
+
 </div>
 
 <div id="mensagem">
-    🧙 Explore o reino! Use as setas do teclado para andar.
+
+👹 Um monstro apareceu na floresta!
+<br>
+Use as setas para se aproximar e ataque.
+
 </div>
 
 </div>
 
 <script>
 
-let x = 80;
-let y = 220;
+let x = 420;
+let y = 350;
 
 let vida = 100;
 let xp = 0;
 let ouro = 0;
+
+let vidaMonstro = 100;
 
 function mover(dx, dy) {
 
     x += dx;
     y += dy;
 
-    // Limites do mapa
-    if (x < 0) x = 0;
-    if (y < 0) y = 0;
-    if (x > 755) x = 755;
-    if (y > 455) y = 455;
+    if (x < 10) x = 10;
+    if (y < 10) y = 10;
 
-    document.getElementById("jogador").style.left = x + "px";
-    document.getElementById("jogador").style.top = y + "px";
+    if (x > 840) x = 840;
+    if (y > 450) y = 450;
 
-    verificarLocal();
+    document.getElementById("jogador").style.left =
+        x + "px";
+
+    document.getElementById("jogador").style.top =
+        y + "px";
+
+    verificarDistancia();
+
 }
 
 document.addEventListener("keydown", function(event) {
 
     if (event.key === "ArrowUp") {
-        mover(0,-20);
+        mover(0,-25);
     }
 
     if (event.key === "ArrowDown") {
-        mover(0,20);
+        mover(0,25);
     }
 
     if (event.key === "ArrowLeft") {
-        mover(-20,0);
+        mover(-25,0);
     }
 
     if (event.key === "ArrowRight") {
-        mover(20,0);
+        mover(25,0);
     }
 
 });
 
-function verificarLocal() {
+function verificarDistancia() {
 
-    if (x < 180 && y < 150) {
+    let mx = 650;
+    let my = 180;
+
+    let distancia =
+        Math.sqrt(
+            Math.pow(x - mx, 2) +
+            Math.pow(y - my, 2)
+        );
+
+    if (distancia < 130) {
 
         document.getElementById("mensagem").innerHTML =
-        "🏰 Você chegou à Vila de Eldor. " +
-        "O ancião precisa falar com você.";
+        "👹 Você está perto do monstro! " +
+        "Clique em ⚔️ ATACAR para lutar!";
 
     }
 
-    else if (x > 600 && y < 180) {
+}
+
+function atacar() {
+
+    let mx = 650;
+    let my = 180;
+
+    let distancia =
+        Math.sqrt(
+            Math.pow(x - mx, 2) +
+            Math.pow(y - my, 2)
+        );
+
+    if (distancia > 150) {
 
         document.getElementById("mensagem").innerHTML =
-        "🌲 Você entrou na Floresta Sombria. " +
-        "Cuidado com os monstros!";
+        "⚠️ Você está muito longe! " +
+        "Aproxime-se do monstro.";
+
+        return;
+    }
+
+    if (vidaMonstro <= 0) {
+
+        document.getElementById("mensagem").innerHTML =
+        "🏆 Você já derrotou este monstro!";
+
+        return;
+    }
+
+    let dano = Math.floor(Math.random() * 20) + 10;
+
+    vidaMonstro -= dano;
+
+    if (vidaMonstro < 0) {
+        vidaMonstro = 0;
+    }
+
+    document.getElementById("vidaMonstro").style.width =
+        vidaMonstro + "%";
+
+    if (vidaMonstro <= 0) {
+
+        xp += 50;
+        ouro += 25;
+
+        document.getElementById("monstro").innerHTML = "💀";
+
+        document.getElementById("mensagem").innerHTML =
+        "🏆 VITÓRIA! Você derrotou o monstro! " +
+        "Ganhou ⭐ 50 XP e 💰 25 moedas.";
+
+    } else {
+
+        let danoInimigo =
+            Math.floor(Math.random() * 10) + 5;
+
+        vida -= danoInimigo;
+
+        if (vida < 0) {
+            vida = 0;
+        }
+
+        document.getElementById("mensagem").innerHTML =
+        "⚔️ Você causou " + dano +
+        " de dano!<br>" +
+        "👹 O monstro causou " +
+        danoInimigo + " de dano em você.";
 
     }
 
-    else if (x > 600 && y > 350) {
+    atualizar();
 
-        document.getElementById("mensagem").innerHTML =
-        "🕳️ Você encontrou uma caverna misteriosa. " +
-        "Talvez exista um tesouro lá dentro.";
+}
 
-    }
+function explorar() {
 
-    else {
+    document.getElementById("mensagem").innerHTML =
+    "🌲 Você está explorando a floresta. " +
+    "Talvez exista uma pista sobre o Cristal de Eldor...";
 
-        document.getElementById("mensagem").innerHTML =
-        "🗺️ Explore o reino e procure pistas sobre o Cristal de Eldor.";
+}
 
-    }
+function atualizar() {
+
+    document.getElementById("vida").textContent = vida;
+
+    document.getElementById("xp").textContent = xp;
+
+    document.getElementById("ouro").textContent = ouro;
 
 }
 
