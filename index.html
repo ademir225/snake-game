@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>O Reino Perdido</title>
+
+<style>
+    * {
+        box-sizing: border-box;
+    }
+
+    body {
+        margin: 0;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        background: #090d1a;
+        color: white;
+        font-family: Georgia, serif;
+    }
+
+    .tela {
+        width: 90%;
+        max-width: 800px;
+        min-height: 500px;
+        padding: 60px 30px;
+        text-align: center;
+        border: 3px solid #d4af37;
+        border-radius: 15px;
+        background: linear-gradient(#172447, #090d1a);
+        box-shadow: 0 0 40px #d4af37;
+    }
+
+    h1 {
+        color: #ffd700;
+        font-size: 52px;
+        margin-bottom: 10px;
+    }
+
+    .subtitulo {
+        font-size: 22px;
+        color: #ddd;
+        margin-bottom: 50px;
+    }
+
+    button {
+        padding: 16px 35px;
+        font-size: 20px;
+        font-weight: bold;
+        color: #111;
+        background: #ffd700;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+    }
+
+    button:hover {
+        background: #fff;
+        transform: scale(1.05);
+    }
+
+    #historia {
+        display: none;
+        font-size: 19px;
+        line-height: 1.7;
+    }
+
+    .missao {
+        color: #ffd700;
+        font-size: 25px;
+        margin-top: 30px;
+    }
+</style>
+</head>
+
+<body>
+
+<div class="tela">
+
+    <div id="inicio">
+        <h1>⚔️ O Reino Perdido ⚔️</h1>
+
+        <p class="subtitulo">
+            Uma grande aventura está prestes a começar...
+        </p>
+
+        <button onclick="comecarJogo()">
+            COMEÇAR JOGO
+        </button>
+    </div>
+
+    <div id="historia">
+
+        <h2>🏰 A Vila de Eldor</h2>
+
+        <p>
+            Você acorda com o som dos sinos da vila.
+            Ao sair de sua casa, percebe que algo está errado.
+        </p>
+
+        <p>
+            O ancião corre até você e conta que o
+            <strong>Cristal de Eldor</strong>, responsável por proteger
+            o reino, foi roubado durante a noite.
+        </p>
+
+        <p>
+            Agora você precisa descobrir quem roubou o cristal
+            antes que os monstros invadam a vila.
+        </p>
+
+        <div class="missao">
+            📜 MISSÃO 1: A Vila em Perigo
+        </div>
+
+        <p>
+            Fale com o ancião e descubra o que aconteceu.
+        </p>
+
+        <button onclick="alert('Missão iniciada! Em breve teremos o mapa e os personagens.')">
+            ACEITAR MISSÃO
+        </button>
+
+    </div>
+
+</div>
+
+<script>
+function comecarJogo() {
+    document.getElementById("inicio").style.display = "none";
+    document.getElementById("historia").style.display = "block";
+}
+</script>
+
+</body>
+</html>
