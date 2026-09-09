@@ -8,56 +8,96 @@
 <style>
 body {
     margin: 0;
-    background: #090d1a;
+    background: #080b14;
     color: white;
-    font-family: Georgia, serif;
+    font-family: Arial, sans-serif;
     text-align: center;
 }
 
 #jogo {
-    max-width: 800px;
-    margin: 40px auto;
-    padding: 30px;
-    background: linear-gradient(#172447, #090d1a);
-    border: 3px solid #d4af37;
-    border-radius: 15px;
-    box-shadow: 0 0 30px #d4af37;
+    max-width: 900px;
+    margin: 20px auto;
 }
 
 h1 {
     color: #ffd700;
-    font-size: 45px;
-}
-
-button {
-    padding: 14px 25px;
-    margin: 8px;
-    background: #ffd700;
-    border: none;
-    border-radius: 8px;
-    font-size: 17px;
-    font-weight: bold;
-    cursor: pointer;
-}
-
-button:hover {
-    background: white;
-}
-
-#aventura {
-    display: none;
 }
 
 #status {
-    background: #111827;
-    padding: 15px;
+    background: #171d2e;
+    padding: 12px;
     border-radius: 10px;
-    margin: 20px 0;
+    margin-bottom: 15px;
+}
+
+#mapa {
+    position: relative;
+    width: 800px;
+    max-width: 95vw;
+    height: 500px;
+    margin: auto;
+    overflow: hidden;
+    border: 4px solid #d4af37;
+    border-radius: 12px;
+    background:
+        linear-gradient(45deg, #285c35 25%, #347344 25%,
+        #347344 50%, #285c35 50%, #285c35 75%,
+        #347344 75%);
+    background-size: 80px 80px;
+}
+
+#jogador {
+    position: absolute;
+    width: 38px;
+    height: 38px;
+    background: #3498db;
+    border: 3px solid white;
+    border-radius: 50%;
+    left: 80px;
+    top: 220px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 23px;
+    z-index: 5;
+}
+
+.local {
+    position: absolute;
+    padding: 10px;
+    background: #1b1b1b;
+    border: 2px solid #ffd700;
+    border-radius: 8px;
+    color: white;
+}
+
+#vila {
+    left: 40px;
+    top: 40px;
+}
+
+#floresta {
+    right: 40px;
+    top: 60px;
+}
+
+#caverna {
+    right: 50px;
+    bottom: 50px;
 }
 
 #mensagem {
-    min-height: 100px;
-    line-height: 1.6;
+    min-height: 50px;
+    padding: 15px;
+    font-size: 18px;
+}
+
+.controles button {
+    width: 55px;
+    height: 45px;
+    margin: 3px;
+    font-size: 20px;
+    cursor: pointer;
 }
 </style>
 </head>
@@ -66,121 +106,126 @@ button:hover {
 
 <div id="jogo">
 
-    <div id="inicio">
-        <h1>⚔️ O Reino Perdido ⚔️</h1>
+<h1>⚔️ O Reino Perdido ⚔️</h1>
 
-        <p>
-            Uma grande aventura está prestes a começar.
-        </p>
+<div id="status">
+❤️ Vida: <span id="vida">100</span>
+&nbsp;&nbsp;
+⭐ XP: <span id="xp">0</span>
+&nbsp;&nbsp;
+💰 Ouro: <span id="ouro">0</span>
+</div>
 
-        <p>
-            O Cristal de Eldor foi roubado e o reino está em perigo.
-        </p>
+<div id="mapa">
 
-        <button onclick="comecar()">
-            COMEÇAR AVENTURA
-        </button>
+    <div id="jogador">🧙</div>
+
+    <div class="local" id="vila">
+        🏰 Vila
     </div>
 
-    <div id="aventura">
-
-        <h1>🏰 Vila de Eldor</h1>
-
-        <div id="status">
-            ❤️ Vida: <span id="vida">100</span>
-            &nbsp; | &nbsp;
-            ⭐ XP: <span id="xp">0</span>
-            &nbsp; | &nbsp;
-            💰 Ouro: <span id="ouro">0</span>
-        </div>
-
-        <h2>📜 Missão 1: A Vila em Perigo</h2>
-
-        <div id="mensagem">
-            O ancião da vila está esperando por você.
-            Fale com ele para descobrir o que aconteceu.
-        </div>
-
-        <button onclick="falarComAnciao()">
-            🧙 Falar com o Ancião
-        </button>
-
-        <button onclick="explorar()">
-            🌲 Explorar
-        </button>
-
-        <button onclick="atacar()">
-            ⚔️ Atacar inimigo
-        </button>
-
+    <div class="local" id="floresta">
+        🌲 Floresta
     </div>
+
+    <div class="local" id="caverna">
+        🕳️ Caverna
+    </div>
+
+</div>
+
+<div class="controles">
+    <button onclick="mover(0,-20)">⬆️</button><br>
+
+    <button onclick="mover(-20,0)">⬅️</button>
+    <button onclick="mover(0,20)">⬇️</button>
+    <button onclick="mover(20,0)">➡️</button>
+</div>
+
+<div id="mensagem">
+    🧙 Explore o reino! Use as setas do teclado para andar.
+</div>
 
 </div>
 
 <script>
 
+let x = 80;
+let y = 220;
+
 let vida = 100;
 let xp = 0;
 let ouro = 0;
 
-function comecar() {
+function mover(dx, dy) {
 
-    document.getElementById("inicio").style.display = "none";
-    document.getElementById("aventura").style.display = "block";
+    x += dx;
+    y += dy;
 
+    // Limites do mapa
+    if (x < 0) x = 0;
+    if (y < 0) y = 0;
+    if (x > 755) x = 755;
+    if (y > 455) y = 455;
+
+    document.getElementById("jogador").style.left = x + "px";
+    document.getElementById("jogador").style.top = y + "px";
+
+    verificarLocal();
 }
 
-function falarComAnciao() {
+document.addEventListener("keydown", function(event) {
 
-    document.getElementById("mensagem").innerHTML =
-    "🧙 O ancião diz: 'Aventureiro! O Cristal de Eldor foi roubado. " +
-    "Precisamos de sua ajuda. Encontre pistas na floresta!'";
+    if (event.key === "ArrowUp") {
+        mover(0,-20);
+    }
 
-}
+    if (event.key === "ArrowDown") {
+        mover(0,20);
+    }
 
-function explorar() {
+    if (event.key === "ArrowLeft") {
+        mover(-20,0);
+    }
 
-    document.getElementById("mensagem").innerHTML =
-    "🌲 Você entrou na floresta e encontrou uma criatura misteriosa! " +
-    "Prepare-se para lutar.";
+    if (event.key === "ArrowRight") {
+        mover(20,0);
+    }
 
-}
+});
 
-function atacar() {
+function verificarLocal() {
 
-    let dano = Math.floor(Math.random() * 20) + 5;
-
-    vida -= dano;
-
-    if (vida <= 0) {
-
-        vida = 0;
+    if (x < 180 && y < 150) {
 
         document.getElementById("mensagem").innerHTML =
-        "💀 Você foi derrotado! Recomece sua aventura.";
-
-    } else {
-
-        let ganho = Math.floor(Math.random() * 20) + 10;
-
-        xp += ganho;
-        ouro += 5;
-
-        document.getElementById("mensagem").innerHTML =
-        "⚔️ Você atacou o inimigo! " +
-        "Ganhou " + ganho + " XP e 5 moedas.";
+        "🏰 Você chegou à Vila de Eldor. " +
+        "O ancião precisa falar com você.";
 
     }
 
-    atualizar();
+    else if (x > 600 && y < 180) {
 
-}
+        document.getElementById("mensagem").innerHTML =
+        "🌲 Você entrou na Floresta Sombria. " +
+        "Cuidado com os monstros!";
 
-function atualizar() {
+    }
 
-    document.getElementById("vida").textContent = vida;
-    document.getElementById("xp").textContent = xp;
-    document.getElementById("ouro").textContent = ouro;
+    else if (x > 600 && y > 350) {
+
+        document.getElementById("mensagem").innerHTML =
+        "🕳️ Você encontrou uma caverna misteriosa. " +
+        "Talvez exista um tesouro lá dentro.";
+
+    }
+
+    else {
+
+        document.getElementById("mensagem").innerHTML =
+        "🗺️ Explore o reino e procure pistas sobre o Cristal de Eldor.";
+
+    }
 
 }
 
