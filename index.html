@@ -6,121 +6,111 @@
 <title>O Reino Perdido</title>
 
 <style>
-    * {
-        box-sizing: border-box;
-    }
+body {
+    margin: 0;
+    background: #090d1a;
+    color: white;
+    font-family: Georgia, serif;
+    text-align: center;
+}
 
-    body {
-        margin: 0;
-        min-height: 100vh;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        background: #090d1a;
-        color: white;
-        font-family: Georgia, serif;
-    }
+#jogo {
+    max-width: 800px;
+    margin: 40px auto;
+    padding: 30px;
+    background: linear-gradient(#172447, #090d1a);
+    border: 3px solid #d4af37;
+    border-radius: 15px;
+    box-shadow: 0 0 30px #d4af37;
+}
 
-    .tela {
-        width: 90%;
-        max-width: 800px;
-        min-height: 500px;
-        padding: 60px 30px;
-        text-align: center;
-        border: 3px solid #d4af37;
-        border-radius: 15px;
-        background: linear-gradient(#172447, #090d1a);
-        box-shadow: 0 0 40px #d4af37;
-    }
+h1 {
+    color: #ffd700;
+    font-size: 45px;
+}
 
-    h1 {
-        color: #ffd700;
-        font-size: 52px;
-        margin-bottom: 10px;
-    }
+button {
+    padding: 14px 25px;
+    margin: 8px;
+    background: #ffd700;
+    border: none;
+    border-radius: 8px;
+    font-size: 17px;
+    font-weight: bold;
+    cursor: pointer;
+}
 
-    .subtitulo {
-        font-size: 22px;
-        color: #ddd;
-        margin-bottom: 50px;
-    }
+button:hover {
+    background: white;
+}
 
-    button {
-        padding: 16px 35px;
-        font-size: 20px;
-        font-weight: bold;
-        color: #111;
-        background: #ffd700;
-        border: none;
-        border-radius: 10px;
-        cursor: pointer;
-    }
+#aventura {
+    display: none;
+}
 
-    button:hover {
-        background: #fff;
-        transform: scale(1.05);
-    }
+#status {
+    background: #111827;
+    padding: 15px;
+    border-radius: 10px;
+    margin: 20px 0;
+}
 
-    #historia {
-        display: none;
-        font-size: 19px;
-        line-height: 1.7;
-    }
-
-    .missao {
-        color: #ffd700;
-        font-size: 25px;
-        margin-top: 30px;
-    }
+#mensagem {
+    min-height: 100px;
+    line-height: 1.6;
+}
 </style>
 </head>
 
 <body>
 
-<div class="tela">
+<div id="jogo">
 
     <div id="inicio">
         <h1>⚔️ O Reino Perdido ⚔️</h1>
 
-        <p class="subtitulo">
-            Uma grande aventura está prestes a começar...
+        <p>
+            Uma grande aventura está prestes a começar.
         </p>
 
-        <button onclick="comecarJogo()">
-            COMEÇAR JOGO
+        <p>
+            O Cristal de Eldor foi roubado e o reino está em perigo.
+        </p>
+
+        <button onclick="comecar()">
+            COMEÇAR AVENTURA
         </button>
     </div>
 
-    <div id="historia">
+    <div id="aventura">
 
-        <h2>🏰 A Vila de Eldor</h2>
+        <h1>🏰 Vila de Eldor</h1>
 
-        <p>
-            Você acorda com o som dos sinos da vila.
-            Ao sair de sua casa, percebe que algo está errado.
-        </p>
-
-        <p>
-            O ancião corre até você e conta que o
-            <strong>Cristal de Eldor</strong>, responsável por proteger
-            o reino, foi roubado durante a noite.
-        </p>
-
-        <p>
-            Agora você precisa descobrir quem roubou o cristal
-            antes que os monstros invadam a vila.
-        </p>
-
-        <div class="missao">
-            📜 MISSÃO 1: A Vila em Perigo
+        <div id="status">
+            ❤️ Vida: <span id="vida">100</span>
+            &nbsp; | &nbsp;
+            ⭐ XP: <span id="xp">0</span>
+            &nbsp; | &nbsp;
+            💰 Ouro: <span id="ouro">0</span>
         </div>
 
-        <p>
-            Fale com o ancião e descubra o que aconteceu.
-        </p>
+        <h2>📜 Missão 1: A Vila em Perigo</h2>
 
-        <button onclick="alert('Missão iniciada! Em breve teremos o mapa e os personagens.')">
-            ACEITAR MISSÃO
+        <div id="mensagem">
+            O ancião da vila está esperando por você.
+            Fale com ele para descobrir o que aconteceu.
+        </div>
+
+        <button onclick="falarComAnciao()">
+            🧙 Falar com o Ancião
+        </button>
+
+        <button onclick="explorar()">
+            🌲 Explorar
+        </button>
+
+        <button onclick="atacar()">
+            ⚔️ Atacar inimigo
         </button>
 
     </div>
@@ -128,10 +118,72 @@
 </div>
 
 <script>
-function comecarJogo() {
+
+let vida = 100;
+let xp = 0;
+let ouro = 0;
+
+function comecar() {
+
     document.getElementById("inicio").style.display = "none";
-    document.getElementById("historia").style.display = "block";
+    document.getElementById("aventura").style.display = "block";
+
 }
+
+function falarComAnciao() {
+
+    document.getElementById("mensagem").innerHTML =
+    "🧙 O ancião diz: 'Aventureiro! O Cristal de Eldor foi roubado. " +
+    "Precisamos de sua ajuda. Encontre pistas na floresta!'";
+
+}
+
+function explorar() {
+
+    document.getElementById("mensagem").innerHTML =
+    "🌲 Você entrou na floresta e encontrou uma criatura misteriosa! " +
+    "Prepare-se para lutar.";
+
+}
+
+function atacar() {
+
+    let dano = Math.floor(Math.random() * 20) + 5;
+
+    vida -= dano;
+
+    if (vida <= 0) {
+
+        vida = 0;
+
+        document.getElementById("mensagem").innerHTML =
+        "💀 Você foi derrotado! Recomece sua aventura.";
+
+    } else {
+
+        let ganho = Math.floor(Math.random() * 20) + 10;
+
+        xp += ganho;
+        ouro += 5;
+
+        document.getElementById("mensagem").innerHTML =
+        "⚔️ Você atacou o inimigo! " +
+        "Ganhou " + ganho + " XP e 5 moedas.";
+
+    }
+
+    atualizar();
+
+}
+
+function atualizar() {
+
+    document.getElementById("vida").textContent = vida;
+    document.getElementById("xp").textContent = xp;
+    document.getElementById("ouro").textContent = ouro;
+
+}
+
 </script>
 
 </body>
